@@ -10,7 +10,7 @@ Stu Student Management System, which is a template of management system.
 📝**TODO List:**
 
 - ✅1st version: **Vintage Memory**
-- 2ed version: 
+- 2ed version: **New Wave**
 - 3rd version: 
 
 
@@ -37,23 +37,23 @@ Stu Student Management System, which is a template of management system.
 
 login (Username: admin, Password: admin)
 
-<img src="D:\data_of_programming\github\Stu-SMS\previews\1_login.PNG" alt="1_login" style="zoom:50%;" />
+<img src="previews/1_login.PNG" alt="1_login" style="zoom:50%;" />
 
 homepage
 
-<img src="D:\data_of_programming\github\Stu-SMS\previews\1_homepage.PNG" alt="1_homepage" style="zoom:50%;" />
+<img src="previews/1_homepage.PNG" alt="1_homepage" style="zoom:50%;" />
 
 student list
 
-<img src="D:\data_of_programming\github\Stu-SMS\previews\1_studentlist.PNG" alt="1_studentlist" style="zoom:50%;" />
+<img src="previews/1_studentlist.PNG" alt="1_studentlist" style="zoom:50%;" />
 
 add new student
 
-<img src="D:\data_of_programming\github\Stu-SMS\previews\1_addnew.PNG" alt="1_addnew" style="zoom:50%;" />
+<img src="previews/1_addnew.PNG" alt="1_addnew" style="zoom:50%;" />
 
 edit
 
-<img src="D:\data_of_programming\github\Stu-SMS\previews\1_edit.PNG" alt="1_edit" style="zoom:50%;" />
+<img src="previews/1_edit.PNG" alt="1_edit" style="zoom:50%;" />
 
 
 
@@ -63,6 +63,18 @@ edit
 
 - the display of date is wrong
 - more feature...
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
