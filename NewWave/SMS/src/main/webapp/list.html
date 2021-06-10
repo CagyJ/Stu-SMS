@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+    <script src="js/vue.js" type="text/javascript"></script>
+    <script src="element-ui/lib/index.js"></script>
+    <script src="js/axios-0.18.0.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="list">
+    <!-- student list block  -->
+    <el-container>
+
+        <el-main>
+            <b style="color: red; font-size: 24px">Student list</b>
+            <div style="float: right">
+                <el-button type="primary" @click="addStu">Add New</el-button>
+            </div>
+            <el-table :data="tableData">
+                <el-table-column prop="date" label="Date" width="140">
+                </el-table-column>
+                <el-table-column prop="name" label="Name" width="120">
+                </el-table-column>
+                <el-table-column prop="id" label="ID">
+                </el-table-column>
+                <el-table-column prop="status" label="Status">
+                </el-table-column>
+                <el-table-column label="Operation" width="230">
+                    <template slot-scope="props">
+                        <el-button type="warning" @click="editStu(props.row)">Edit</el-button>
+                        <el-button type="danger" @click="deleteStu(props.row)">Delete</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-main>
+    </el-container>
+
+    <!-- pagination block
+        @current-change: trigger when current page is changed
+        :current-page: current page
+        :page-sizes:
+        :pagination.pageSize:
+        layout: the position of the layour
+        :total: total numbers
+    -->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="pagination.currentPage"
+            :page-size="pagination.pageSize"
+            layout="total, prev, pager, next"
+            :total="pagination.total">
+    </el-pagination>
+
+    <!-- the dialog for adding new student -->
+    <el-dialog title="New Student" :visible.sync="dialogFormVisibleForAdd" @close="resetForm('addForm')">
+        <el-form :model="addForm" :rules="rules">
+            <el-form-item label="Name" :label-width="formLabelWidth" prop="name">
+                <el-input v-model="addForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="ID" :label-width="formLabelWidth" prop="id">
+                <el-input v-model="addForm.id" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Sex" :label-width="formLabelWidth" prop="sex">
+                <el-radio v-model="addForm.sex" label="male">Male</el-radio>
+                <el-radio v-model="addForm.sex" label="female">Female</el-radio>
+            </el-form-item>
+            <el-form-item label="Date" :label-width="formLabelWidth" prop="date">
+                <el-input v-model="addForm.date" type="date"/>
+            </el-form-item>
+            <el-form-item label="Status" :label-width="formLabelWidth" prop="status">
+                <el-switch
+                        v-model="addForm.status"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-value="active"
+                        inactive-value="passive">
+                </el-switch>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="addNew('addForm')">Add</el-button>
+            <el-button type="warning" @click="resetForm('addForm')">Reset</el-button>
+            <el-button type="danger" @click="dialogFormVisibleForAdd = false">Cancle</el-button>
+        </div>
+    </el-dialog>
+
+    <!-- the dialog for editing a student -->
+    <el-dialog title="Edit" :visible.sync="dialogFormVisibleForEdit">
+        <el-form :model="editForm" :rules="rules">
+            <el-form-item label="Name" :label-width="formLabelWidth" prop="name">
+                <el-input v-model="editForm.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="ID" :label-width="formLabelWidth" prop="id">
+                <el-input v-model="editForm.id" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Sex" :label-width="formLabelWidth" prop="sex">
+                <el-radio v-model="editForm.sex" label="male">Male</el-radio>
+                <el-radio v-model="editForm.sex" label="female">Female</el-radio>
+            </el-form-item>
+            <el-form-item label="Date" :label-width="formLabelWidth" prop="date">
+                <el-input v-model="editForm.date" type="date"/>
+            </el-form-item>
+            <el-form-item label="Status" :label-width="formLabelWidth" prop="status">
+                <el-switch
+                        v-model="editForm.status"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-value="active"
+                        inactive-value="passive">
+                </el-switch>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="edit()">Edit</el-button>
+            <el-button type="danger" @click="dialogFormVisibleForEdit = false">Cancel</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog
+            title="Delete"
+            :visible.sync="dialogVisibleForDelete"
+            width="30%"
+            :before-close="handleClose">
+        <span>Are you sure to delete?</span>
+        <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisibleForDelete = false">Cancel</el-button>
+                <el-button type="danger" @click="deleteS()">Delete</el-button>
+            </span>
+    </el-dialog>
+</div>
+
+</body>
+<script>
+    new Vue({
+        el: "#list",
+        data: {
+            dialogFormVisibleForAdd: false,
+            dialogFormVisibleForEdit: false,
+            dialogVisibleForDelete: false,
+            // form for adding new student
+            addForm: {
+                name: '',
+                id: '',
+                sex: 'male',
+                date: '',
+                status: 'active'
+            },
+            // form for editing a student
+            editForm: {
+                name: '',
+                id: '',
+                sex: 'male',
+                date: '',
+                status: 'active'
+            },
+            deleteId: '',
+            formLabelWidth: '120px',
+            tableData:[],
+            pagination: {
+                currentPage: 1,
+                pageSize: 5,
+                total: 0
+            },
+            rules: {
+                name: [
+                    {required: true, trigger: 'blur'},
+                    {min: 3, max: 12, message: '3-12 characters', trigger: 'blur'}
+                ],
+                id: [
+                    {required: true, trigger: 'blur'},
+                    {min: 4, max: 4, message: 'should be 4 characters', trigger: 'blur'}
+                ],
+                date: [
+                    {required: true, trigger: 'change'}
+                ],
+                sex: [
+                    {required: true, trigger: 'change'}
+                ],
+            }
+        },
+        methods: {
+            // pagination: {
+            //     currentPage: 1,
+            //     pageSize: 5,
+            //     total: 0
+            // },
+
+            // pagination selection
+            selectByPage() {
+              axios.post("/studentServlet", "method=selectByPage&curPage=" + this.pagination.currentPage + "&pageSize=" + this.pagination.pageSize)
+                .then(resp => {
+                    // process response data
+                    this.tableData = resp.data.list;
+                    // set pagination parameter
+                    // current page
+                    this.pagination.currentPage = resp.data.pageNum;
+                    // total pages
+                    this.pagination.total = resp.data.total;
+                })
+            },
+            //改变每页条数时执行的函数
+            handleSizeChange(pageSize) {
+                //修改分页查询的参数
+                this.pagination.pageSize = pageSize;
+                //重新执行查询
+                this.selectByPage();
+            },
+            // change current page
+            handleCurrentChange(pageNum) {
+                // edit the parameter of pagination selection
+                this.pagination.currentPage = pageNum;
+                // select again
+                this.selectByPage();
+            },
+            addStu() {
+                this.dialogFormVisibleForAdd = true;
+            },
+            addNew(formName) {
+
+                // add operation
+                console.log("add");
+                let param = "method=addStudent&name="+this.addForm.name+"&id="+this.addForm.id
+                    +"&sex="+this.addForm.sex+"&date="+this.addForm.date+"&status="+this.addForm.status
+                    +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
+                axios.post("/studentServlet", param)
+                    .then(resp => {
+                        // process response data
+                        this.tableData = resp.data.list;
+                        // set pagination parameter
+                        // current page
+                        this.pagination.currentPage = resp.data.pageNum;
+                        // total pages
+                        this.pagination.total = resp.data.total;
+                    })
+                this.dialogFormVisibleForAdd = false;
+            },
+            editStu(row) {
+                this.dialogFormVisibleForEdit = true;
+
+                this.editForm = {
+                    name: row.name,
+                    id: row.id,
+                    sex: row.sex,
+                    date: row.date,
+                    status: row.status
+                }
+            },
+            edit() {
+                this.dialogFormVisibleForEdit = false;
+                // edit operation
+                console.log("edit");
+                let param = "method=updateStudent&name="+this.editForm.name+"&id="+this.editForm.id
+                    +"&sex="+this.editForm.sex+"&date="+this.editForm.date+"&status="+this.editForm.status
+                    +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
+                axios.post("/studentServlet", param)
+                    .then(resp => {
+                        // process response data
+                        this.tableData = resp.data.list;
+                        // set pagination parameter
+                        // current page
+                        this.pagination.currentPage = resp.data.pageNum;
+                        // total pages
+                        this.pagination.total = resp.data.total;
+                    })
+            },
+            deleteStu(row) {
+                this.dialogVisibleForDelete = true;
+                this.deleteId = row.id;
+            },
+            deleteS() {
+                this.dialogVisibleForDelete = false;
+                // delete operation
+                let param = "method=deleteStudent&id="+this.deleteId+"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
+                console.log("delete");
+                axios.post("/studentServlet", param)
+                    .then(resp => {
+                        // process response data
+                        this.tableData = resp.data.list;
+                        // set pagination parameter
+                        // current page
+                        this.pagination.currentPage = resp.data.pageNum;
+                        // total pages
+                        this.pagination.total = resp.data.total;
+                    })
+            },
+            handleClose(done) {
+                this.$confirm('close？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {});
+            },
+            resetForm(formName) {
+                // double bind, formData also got the data
+                this.addForm = {
+                    name: '',
+                    id: '',
+                    sex: 'male',
+                    date: '',
+                    status: 'active'};
+                // clear the data of the form
+                this.$refs[formName].resetFields();
+            }
+        },
+        mounted: function() {
+            this.selectByPage();
+        }
+    })
+</script>
+</html>

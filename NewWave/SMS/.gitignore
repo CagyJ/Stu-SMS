@@ -3,7 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-/src/main/webapp/lib/
+/src/main/webapp/element-ui/
+/src/main/webapp/js/
 
 ### STS ###
 .apt_generated
