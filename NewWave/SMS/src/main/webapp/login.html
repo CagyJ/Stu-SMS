@@ -51,6 +51,7 @@
 </div>
 </body>
 <script>
+    axios.defaults.withCredentials = true;
     new Vue({
         el: "#app",
         data: {
@@ -80,6 +81,7 @@
                             .then(resp => {
                                 console.log(resp.data);
                                 if (resp.data.msg === "success") {
+                                    window.sessionStorage.setItem('username', this.form.username);
                                     // login success
                                     location.href = "index.html";
                                 } else {

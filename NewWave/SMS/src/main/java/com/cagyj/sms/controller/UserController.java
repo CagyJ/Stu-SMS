@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +27,12 @@ public class UserController {
 
     @PostMapping("/userLogin")
     @ResponseBody
-    public Map login(@RequestBody User user) {
+    public Map login(@RequestBody User user, HttpServletRequest req) {
 //        System.out.println("=====" + user.getUsername() + ": " + user.getPassword());
         Map result = new HashMap();
         try {
-            userService.login(user);
+            User login = userService.login(user);
+            req.getSession().setAttribute("username", login.getUsername());
             result.put("code", "1");
             result.put("msg", "success");
         } catch (BussinessException ex) {
@@ -35,6 +40,22 @@ public class UserController {
             result.put("msg", ex.getMsg());
             ex.printStackTrace();
         }
+        return result;
+    }
+
+    @PostMapping("/userLogout")
+    @ResponseBody
+    public Map logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Map result = new HashMap();
+        System.out.println("Before remove: " + req.getSession().getAttribute("username"));
+        if (req.getSession().getAttribute("username") != null) {
+            req.setAttribute("username", req.getSession().getAttribute("username"));
+            req.getSession().removeAttribute("username");
+//            resp.sendRedirect("/login.html");
+        }
+        System.out.println("After remove: " + req.getSession().getAttribute("username"));
+        result.put("code", "1");
+        result.put("msg", "success");
         return result;
     }
 }

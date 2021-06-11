@@ -38,7 +38,7 @@
                     text-color="white"
                     active-text-color="#ffd04b"
                     style="margin-left: auto">
-                        <el-menu-item index="1">Process</el-menu-item>
+                        <el-menu-item index="1"> Process </el-menu-item>
                         <el-submenu index="2">
                             <template slot="title">My Workspace</template>
                             <el-menu-item index="2-1">Profile</el-menu-item>
@@ -97,10 +97,11 @@
     </div>
 </body>
 <script>
+    axios.defaults.withCredentials = true;
     new Vue({
         el: "#div",
         data: {
-            iframeSrc: "manager.html"
+            iframeSrc: "manager.html",
         },
         methods: {
             findAll: function() {
@@ -108,7 +109,7 @@
             },
             logout: function() {
                 this.$cookie = null;
-                axios.post("/userProcess", "method=logout")
+                axios.post("/userLogout")
                     .then(
                         console.log("logout complete")
                     )
