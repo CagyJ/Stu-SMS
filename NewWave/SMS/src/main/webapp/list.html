@@ -54,6 +54,7 @@
             :total="pagination.total">
     </el-pagination>
 
+
     <!-- the dialog for adding new student -->
     <el-dialog title="New Student" :visible.sync="dialogFormVisibleForAdd" @close="resetForm('addForm')">
         <el-form :model="addForm" :rules="rules">
@@ -182,22 +183,21 @@
             }
         },
         methods: {
-            // pagination: {
-            //     currentPage: 1,
-            //     pageSize: 5,
-            //     total: 0
-            // },
 
             // pagination selection
             selectByPage() {
-              axios.post("/studentServlet", "method=selectByPage&curPage=" + this.pagination.currentPage + "&pageSize=" + this.pagination.pageSize)
+              axios.post("/listStudents", "page=" + this.pagination.currentPage + "&rows=" + this.pagination.pageSize)
                 .then(resp => {
+                    console.log(resp);
                     // process response data
-                    this.tableData = resp.data.list;
+                    console.log(resp.data.records);
+                    this.tableData = resp.data.records;
                     // set pagination parameter
                     // current page
-                    this.pagination.currentPage = resp.data.pageNum;
+                    console.log(resp.data.current);
+                    this.pagination.currentPage = resp.data.current;
                     // total pages
+                    console.log(resp.data.total);
                     this.pagination.total = resp.data.total;
                 })
             },
@@ -210,6 +210,7 @@
             },
             // change current page
             handleCurrentChange(pageNum) {
+                console.log(pageNum);
                 // edit the parameter of pagination selection
                 this.pagination.currentPage = pageNum;
                 // select again
