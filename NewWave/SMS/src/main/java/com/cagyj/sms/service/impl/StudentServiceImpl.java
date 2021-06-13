@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cagyj.sms.entity.Student;
+import com.cagyj.sms.exception.BussinessException;
 import com.cagyj.sms.mapper.StudentMapper;
 import com.cagyj.sms.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,16 @@ public class StudentServiceImpl implements StudentService {
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         Page<Student> studentPage = studentMapper.selectPage(p, queryWrapper);
         return studentPage;
+    }
+
+    @Override
+    @Transactional
+    public Student addStudent(Student student) {
+        try {
+            studentMapper.insert(student);
+        } catch (Exception e) {
+            throw new BussinessException("C01", "Insert failure.");
+        }
+        return student;
     }
 }

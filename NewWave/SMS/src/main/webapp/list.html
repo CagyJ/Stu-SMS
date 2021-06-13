@@ -56,7 +56,7 @@
 
 
     <!-- the dialog for adding new student -->
-    <el-dialog title="New Student" :visible.sync="dialogFormVisibleForAdd" @close="resetForm('addForm')">
+    <el-dialog title="New Student" :visible.sync="dialogFormVisibleForAdd" @close="resetForm()">
         <el-form :model="addForm" :rules="rules">
             <el-form-item label="Name" :label-width="formLabelWidth" prop="name">
                 <el-input v-model="addForm.name" autocomplete="off"></el-input>
@@ -83,7 +83,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="addNew('addForm')">Add</el-button>
-            <el-button type="warning" @click="resetForm('addForm')">Reset</el-button>
+            <el-button type="warning" @click="resetForm()">Reset</el-button>
             <el-button type="danger" @click="dialogFormVisibleForAdd = false">Cancel</el-button>
         </div>
     </el-dialog>
@@ -223,18 +223,13 @@
 
                 // add operation
                 console.log("add");
-                let param = "method=addStudent&name="+this.addForm.name+"&id="+this.addForm.id
+                let param = "name="+this.addForm.name+"&id="+this.addForm.id
                     +"&sex="+this.addForm.sex+"&date="+this.addForm.date+"&status="+this.addForm.status
                     +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
-                axios.post("/studentServlet", param)
+                axios.post("/addStudent", param)
                     .then(resp => {
-                        // process response data
-                        this.tableData = resp.data.list;
-                        // set pagination parameter
-                        // current page
-                        this.pagination.currentPage = resp.data.pageNum;
-                        // total pages
-                        this.pagination.total = resp.data.total;
+                        console.log(resp);
+                        this.selectByPage();
                     })
                 this.dialogFormVisibleForAdd = false;
             },
@@ -294,7 +289,7 @@
                     })
                     .catch(_ => {});
             },
-            resetForm(formName) {
+            resetForm() {
                 // double bind, formData also got the data
                 this.addForm = {
                     name: '',
@@ -303,7 +298,7 @@
                     date: '',
                     status: 'active'};
                 // clear the data of the form
-                this.$refs[formName].resetFields();
+                // this.$refs[formName].resetFields();
             }
         },
         mounted: function() {

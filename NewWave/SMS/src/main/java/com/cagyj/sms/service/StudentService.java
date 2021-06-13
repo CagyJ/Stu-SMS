@@ -13,4 +13,11 @@ public interface StudentService {
      * @return
      */
     public IPage<Student> paging(Integer page, Integer rows);
+
+    /**
+     * add a new student
+     * @param student
+     * @return
+     */
+    public Student addStudent(Student student);
 }

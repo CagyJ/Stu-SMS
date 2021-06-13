@@ -2,6 +2,7 @@ package com.cagyj.sms.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ public class Student {
     private Integer id;
     private String name;
     private String sex;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String status;
 

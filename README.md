@@ -82,7 +82,7 @@ One thing have to say it that using Mybatis-plus to simplify the Mybatis process
 **Contributing:**
 
 - ✅list data
-- add new student
+- ✅add new student
 - edit student info
 - delete a student
 - ...
