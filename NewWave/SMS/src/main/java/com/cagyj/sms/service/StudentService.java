@@ -20,4 +20,17 @@ public interface StudentService {
      * @return
      */
     public Student addStudent(Student student);
+
+    /**
+     * update info of a student
+     * @param student
+     * @return
+     */
+    public Student updateStudent(Student student);
+
+    /**
+     * delete a student
+     * @param id
+     */
+    public void deleteStudent(Integer id);
 }

@@ -53,4 +53,38 @@ public class StudentsController {
         }
         return result;
     }
+
+    @PostMapping("/updateStudent")
+    @ResponseBody
+    public Map updateStudent(Student student) {
+        Map result = new HashMap();
+
+        try {
+            studentService.updateStudent(student);
+            result.put("code", "1");
+            result.put("msg", "success");
+        } catch (BussinessException e) {
+            result.put("code", e.getCode());
+            result.put("msg", e.getMsg());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/deleteStudent")
+    @ResponseBody
+    public Map deleteStudent(Integer id) {
+        Map result = new HashMap();
+
+        try {
+            studentService.deleteStudent(id);
+            result.put("code", "1");
+            result.put("msg", "success");
+        } catch (BussinessException e) {
+            result.put("code", e.getCode());
+            result.put("msg", e.getMsg());
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

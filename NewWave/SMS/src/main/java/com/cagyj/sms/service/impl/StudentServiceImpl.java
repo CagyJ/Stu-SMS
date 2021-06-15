@@ -40,4 +40,35 @@ public class StudentServiceImpl implements StudentService {
         }
         return student;
     }
+
+    @Override
+    @Transactional
+    public Student updateStudent(Student student) {
+        Student s = null;
+        try {
+            QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+            studentQueryWrapper.eq("id", student.getId());
+            s = studentMapper.selectOne(studentQueryWrapper);
+            s.setDate(student.getDate());
+            s.setName(student.getName());
+            s.setSex(student.getSex());
+            s.setStatus(student.getStatus());
+            studentMapper.updateById(s);
+        } catch (Exception e) {
+            throw new BussinessException("CO1", "UPDATE failure");
+        }
+        return s;
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudent(Integer id) {
+        try {
+            QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", id);
+            studentMapper.delete(queryWrapper);
+        } catch (Exception e) {
+            throw new BussinessException("C01", "DELETE failure");
+        }
+    }
 }

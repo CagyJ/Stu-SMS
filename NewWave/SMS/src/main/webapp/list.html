@@ -224,8 +224,7 @@
                 // add operation
                 console.log("add");
                 let param = "name="+this.addForm.name+"&id="+this.addForm.id
-                    +"&sex="+this.addForm.sex+"&date="+this.addForm.date+"&status="+this.addForm.status
-                    +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
+                    +"&sex="+this.addForm.sex+"&date="+this.addForm.date+"&status="+this.addForm.status;
                 axios.post("/addStudent", param)
                     .then(resp => {
                         console.log(resp);
@@ -248,18 +247,13 @@
                 this.dialogFormVisibleForEdit = false;
                 // edit operation
                 console.log("edit");
-                let param = "method=updateStudent&name="+this.editForm.name+"&id="+this.editForm.id
+                let param = "name="+this.editForm.name+"&id="+this.editForm.id
                     +"&sex="+this.editForm.sex+"&date="+this.editForm.date+"&status="+this.editForm.status
                     +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
-                axios.post("/studentServlet", param)
+                axios.post("/updateStudent", param)
                     .then(resp => {
-                        // process response data
-                        this.tableData = resp.data.list;
-                        // set pagination parameter
-                        // current page
-                        this.pagination.currentPage = resp.data.pageNum;
-                        // total pages
-                        this.pagination.total = resp.data.total;
+                        console.log(resp);
+                        this.selectByPage();
                     })
             },
             deleteStu(row) {
@@ -269,17 +263,12 @@
             deleteS() {
                 this.dialogVisibleForDelete = false;
                 // delete operation
-                let param = "method=deleteStudent&id="+this.deleteId+"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
+                let param = "id="+this.deleteId;
                 console.log("delete");
-                axios.post("/studentServlet", param)
+                axios.post("/deleteStudent", param)
                     .then(resp => {
-                        // process response data
-                        this.tableData = resp.data.list;
-                        // set pagination parameter
-                        // current page
-                        this.pagination.currentPage = resp.data.pageNum;
-                        // total pages
-                        this.pagination.total = resp.data.total;
+                        console.log(resp);
+                        this.selectByPage();
                     })
             },
             handleClose(done) {

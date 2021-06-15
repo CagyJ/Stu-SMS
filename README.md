@@ -83,8 +83,9 @@ One thing have to say it that using Mybatis-plus to simplify the Mybatis process
 
 - ✅list data
 - ✅add new student
-- edit student info
-- delete a student
+- ✅edit student info
+- ✅delete a student
+- filter
 - ...
 
 
