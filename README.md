@@ -10,7 +10,7 @@ Stu Student Management System, which is a template of management system.
 📝**TODO List:**
 
 - ✅1st version: **Vintage Memory**
-- 2ed version: **New Wave**
+- ✅2ed version: **New Wave**
 - 3rd version: 
 
 
@@ -34,7 +34,43 @@ Stu Student Management System, which is a template of management system.
 
 
 
-**Previews:**
+**Contributing:**
+
+- the display of date is wrong
+- more feature...
+
+
+
+
+
+### New Wave
+
+**Introduction**: 
+
+Totally applying in **SSM** architecture.
+
+No changes to front-end, use Maven to management, so more detailed version info, pls see the [pom file](https://github.com/CagyJ/Stu-SMS/blob/main/NewWave/SMS/pom.xml).
+
+One thing have to say is that using **Mybatis-plus** to simplify the Mybatis process.
+
+
+
+**Contributing:**
+
+- ✅list data
+- ✅add new student
+- ✅edit student info
+- ✅delete a student
+- ✅filter
+- ...
+
+
+
+
+
+
+
+### Previews
 
 login (Username: admin, Password: admin)
 
@@ -60,39 +96,5 @@ edit
 
 
 
-**Contributing:**
-
-- the display of date is wrong
-- more feature...
-
-
-
-
-
-### New Wave
-
-Totally applying in SSM architecture.
-
-No changes to front-end, use Maven to management, so more detailed version info, pls see the pom file.
-
-One thing have to say it that using Mybatis-plus to simplify the Mybatis process.
-
-
-
-**Contributing:**
-
-- ✅list data
-- ✅add new student
-- ✅edit student info
-- ✅delete a student
-- filter
-- ...
-
-
-
-
-
-
-
-
+### More...
 

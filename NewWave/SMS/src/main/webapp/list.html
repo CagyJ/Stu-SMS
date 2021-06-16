@@ -186,7 +186,7 @@
 
             // pagination selection
             selectByPage() {
-              axios.post("/listStudents", "page=" + this.pagination.currentPage + "&rows=" + this.pagination.pageSize)
+              axios.post("/list/listStudents", "page=" + this.pagination.currentPage + "&rows=" + this.pagination.pageSize)
                 .then(resp => {
                     console.log(resp);
                     // process response data
@@ -225,7 +225,7 @@
                 console.log("add");
                 let param = "name="+this.addForm.name+"&id="+this.addForm.id
                     +"&sex="+this.addForm.sex+"&date="+this.addForm.date+"&status="+this.addForm.status;
-                axios.post("/addStudent", param)
+                axios.post("/list/addStudent", param)
                     .then(resp => {
                         console.log(resp);
                         this.selectByPage();
@@ -250,7 +250,7 @@
                 let param = "name="+this.editForm.name+"&id="+this.editForm.id
                     +"&sex="+this.editForm.sex+"&date="+this.editForm.date+"&status="+this.editForm.status
                     +"&curPage="+this.pagination.currentPage+"&pageSize="+this.pagination.pageSize;
-                axios.post("/updateStudent", param)
+                axios.post("/list/updateStudent", param)
                     .then(resp => {
                         console.log(resp);
                         this.selectByPage();
@@ -265,7 +265,7 @@
                 // delete operation
                 let param = "id="+this.deleteId;
                 console.log("delete");
-                axios.post("/deleteStudent", param)
+                axios.post("/list/deleteStudent", param)
                     .then(resp => {
                         console.log(resp);
                         this.selectByPage();
